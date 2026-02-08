@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoElite - Мир Премиальных Автомобилей</title>
+  <link rel="stylesheet" href="./index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/x-icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>">
+</head>
+
+<body>
+  <!-- 3D Background -->
+  <div class="bg-3d"></div>
+
+  <!-- Particle Canvas -->
+  <canvas id="particles"></canvas>
+
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="loader">
+      <div class="wheel"></div>
+      <div class="loading-text">Загрузка автомобилей...</div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="logo">
+        <i class="fas fa-car"></i>
+        <span>AutoElite</span>
+      </a>
+
+      <div class="nav-menu">
+        <a href="#home" class="nav-link active"><i class="fas fa-home"></i> Главная</a>
+        <a href="#cars" class="nav-link"><i class="fas fa-car-side"></i> Каталог</a>
+        <a href="#comparison" class="nav-link"><i class="fas fa-balance-scale"></i> Сравнение</a>
+        <a href="#configurator" class="nav-link"><i class="fas fa-cogs"></i> Конфигуратор</a>
+        <a href="#news" class="nav-link"><i class="fas fa-newspaper"></i> Новости</a>
+        <a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> О нас</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="login-btn">
+          <i class="fas fa-user"></i>
+          <span>Войти</span>
+        </button>
+      </div>
+
+      <button class="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="title-word" data-word="Будущее">Будущее</span>
+        <span class="title-word" data-word="Автомобилей">Автомобилей</span>
+        <span class="title-word" data-word="Здесь">Здесь</span>
+      </h1>
+      <p class="hero-subtitle">Исследуйте мир премиальных автомобилей с инновационными технологиями</p>
+      <div class="hero-buttons">
+        <button class="btn-primary" id="exploreBtn">
+          <span>Начать путешествие</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        <button class="btn-secondary" id="videoBtn">
+          <i class="fas fa-play"></i>
+          <span>Смотреть видео</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="hero-car">
+      <div class="car-3d" id="car3d">
+        <div class="car-model" id="carModel">
+          <!-- 3D Car will be rendered here -->
+        </div>
+        <div class="car-controls">
+          <button class="car-control-btn" id="rotateLeft"><i class="fas fa-undo"></i></button>
+          <button class="car-control-btn" id="rotateRight"><i class="fas fa-redo"></i></button>
+          <button class="car-control-btn" id="zoomIn"><i class="fas fa-search-plus"></i></button>
+          <button class="car-control-btn" id="zoomOut"><i class="fas fa-search-minus"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <div class="mouse">
+        <div class="wheel"></div>
+      </div>
+      <span>Прокрутите вниз</span>
+    </div>
+  </section>
+
+  <!-- Cars Catalog -->
+  <section class="section" id="cars">
+    <div class="container">
+      <h2 class="section-title">Эксклюзивная Коллекция</h2>
+      <p class="section-subtitle">Выберите автомобиль своей мечты</p>
+
+      <div class="filter-bar">
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="all">Все</button>
+          <button class="filter-btn" data-filter="sport">Спорт</button>
+          <button class="filter-btn" data-filter="suv">Внедорожники</button>
+          <button class="filter-btn" data-filter="luxury">Люкс</button>
+          <button class="filter-btn" data-filter="electric">Электро</button>
+        </div>
+
+        <div class="sort-select">
+          <select id="sortCars">
+            <option value="price-asc">Цена: по возрастанию</option>
+            <option value="price-desc">Цена: по убыванию</option>
+            <option value="power">Мощность</option>
+            <option value="acceleration">Разгон 0-100</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="cars-grid" id="carsGrid">
+        <!-- Cars will be loaded dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Tool -->
+  <section class="section dark-section" id="comparison">
+    <div class="container">
+      <h2 class="section-title">Сравнение Автомобилей</h2>
+      <p class="section-subtitle">Выберите до 3 автомобилей для сравнения</p>
+
+      <div class="comparison-container">
+        <div class="comparison-slots">
+          <div class="comparison-slot" data-slot="1">
+            <div class="slot-placeholder">
+              <i class="fas fa-plus"></i>
+              <span>Добавить автомобиль</span>
+            </div>
+          </div>
+          <div class="comparison-slot" data-slot="2">
+            <div class="slot-placeholder">
+              <i class="fas fa-plus"></i>
+              <span>Добавить автомобиль</span>
+            </div>
+          </div>
+          <div class="comparison-slot" data-slot="3">
+            <div class="slot-placeholder">
+              <i class="fas fa-plus"></i>
+              <span>Добавить автомобиль</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="comparison-results" id="comparisonResults">
+          <div class="results-placeholder">
+            <i class="fas fa-balance-scale"></i>
+            <h3>Выберите автомобили для сравнения</h3>
+            <p>Добавьте автомобили из каталога для детального сравнения характеристик</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D Configurator -->
+  <section class="section" id="configurator">
+    <div class="container">
+      <h2 class="section-title">3D Конфигуратор</h2>
+      <p class="section-subtitle">Создайте свой уникальный автомобиль</p>
+
+      <div class="configurator">
+        <div class="config-viewport">
+          <div class="config-car" id="configCar">
+            <!-- Configurable car will appear here -->
+          </div>
+          <div class="config-controls">
+            <button class="config-control-btn" id="rotateCar"><i class="fas fa-sync-alt"></i> Вращать</button>
+            <button class="config-control-btn" id="changeView"><i class="fas fa-camera"></i> Вид</button>
+            <button class="config-control-btn" id="resetConfig"><i class="fas fa-undo"></i> Сбросить</button>
+          </div>
+        </div>
+
+        <div class="config-options">
+          <div class="config-category">
+            <h3><i class="fas fa-paint-brush"></i> Цвет</h3>
+            <div class="color-options">
+              <div class="color-option" data-color="#1a1a1a" style="background-color: #1a1a1a;"></div>
+              <div class="color-option" data-color="#c0c0c0" style="background-color: #c0c0c0;"></div>
+              <div class="color-option" data-color="#2a4b8d" style="background-color: #2a4b8d;"></div>
+              <div class="color-option" data-color="#c00" style="background-color: #c00;"></div>
+              <div class="color-option" data-color="#fff" style="background-color: #fff;"></div>
+              <div class="color-option" data-color="#ffd700" style="background-color: #ffd700;"></div>
+            </div>
+          </div>
+
+          <div class="config-category">
+            <h3><i class="fas fa-tire"></i> Диски</h3>
+            <div class="wheel-options">
+              <div class="wheel-option active" data-wheel="1">
+                <div class="wheel-preview" style="background-color: #333;"></div>
+                <span>Стандарт</span>
+              </div>
+              <div class="wheel-option" data-wheel="2">
+                <div class="wheel-preview" style="background-color: #555;"></div>
+                <span>Спорт</span>
+              </div>
+              <div class="wheel-option" data-wheel="3">
+                <div class="wheel-preview" style="background-color: #777;"></div>
+                <span>Премиум</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="config-category">
+            <h3><i class="fas fa-chair"></i> Салон</h3>
+            <div class="interior-options">
+              <div class="interior-option active" data-interior="black">
+                <div class="interior-preview" style="background-color: #000;"></div>
+                <span>Черный</span>
+              </div>
+              <div class="interior-option" data-interior="brown">
+                <div class="interior-preview" style="background-color: #8B4513;"></div>
+                <span>Коричневый</span>
+              </div>
+              <div class="interior-option" data-interior="red">
+                <div class="interior-preview" style="background-color: #8B0000;"></div>
+                <span>Красный</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="config-summary">
+            <div class="summary-item">
+              <span>Итоговая стоимость:</span>
+              <span class="summary-price" id="totalPrice">$250,000</span>
+            </div>
+            <button class="btn-primary" id="saveConfig">
+              <i class="fas fa-save"></i>
+              <span>Сохранить конфигурацию</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Stats -->
+  <section class="section dark-section">
+    <div class="container">
+      <h2 class="section-title">Автомобили в реальном времени</h2>
+      <p class="section-subtitle">Динамическая статистика и данные</p>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-tachometer-alt"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value" id="avgSpeed">0</div>
+            <div class="stat-label">Средняя скорость</div>
+            <div class="stat-trend">
+              <i class="fas fa-arrow-up"></i>
+              <span>+5.2% за месяц</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value" id="electricCars">0</div>
+            <div class="stat-label">Электромобилей</div>
+            <div class="stat-trend">
+              <i class="fas fa-arrow-up"></i>
+              <span>+12.7% за месяц</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-car"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value" id="totalCars">0</div>
+            <div class="stat-label">Авто в каталоге</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-gas-pump"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value" id="fuelEfficiency">0</div>
+            <div class="stat-label">л/100км средний расход</div>
+            <div class="stat-trend">
+              <i class="fas fa-arrow-down"></i>
+              <span>-3.1% за месяц</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-data">
+        <div class="live-chart">
+          <canvas id="performanceChart"></canvas>
+        </div>
+        <div class="live-updates">
+          <h3>Последние обновления</h3>
+          <div class="updates-list" id="updatesList">
+            <!-- Updates will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- News Section -->
+  <section class="section" id="news">
+    <div class="container">
+      <h2 class="section-title">Последние Новости</h2>
+      <p class="section-subtitle">Будьте в курсе автомобильных инноваций</p>
+
+      <div class="news-grid" id="newsGrid">
+        <!-- News will be loaded dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3><i class="fas fa-car"></i> AutoElite</h3>
+          <p>Ведущая платформа для энтузиастов автомобилей. Исследуйте, сравнивайте и конфигурируйте автомобили мечты.
+          </p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Разделы</h4>
+          <ul>
+            <li><a href="#home">Главная</a></li>
+            <li><a href="#cars">Каталог</a></li>
+            <li><a href="#comparison">Сравнение</a></li>
+            <li><a href="#configurator">Конфигуратор</a></li>
+            <li><a href="#news">Новости</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Контакты</h4>
+          <ul class="contact-info">
+            <li><i class="fas fa-map-marker-alt"></i> Москва, ул. Автомобильная, 123</li>
+            <li><i class="fas fa-phone"></i> +7 (999) 123-45-67</li>
+            <li><i class="fas fa-envelope"></i> info@autoelite.ru</li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Подписка</h4>
+          <p>Подпишитесь на новости и эксклюзивные предложения</p>
+          <div class="subscribe-form">
+            <input type="email" placeholder="Ваш email" id="subscribeEmail">
+            <button class="btn-primary" id="subscribeBtn">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2024 AutoElite. Все права защищены.</p>
+        <div class="footer-links">
+          <a href="#">Политика конфиденциальности</a>
+          <a href="#">Условия использования</a>
+          <a href="#">Карта сайта</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modals -->
+  <div class="modal" id="carModal">
+    <div class="modal-content">
+      <button class="modal-close"><i class="fas fa-times"></i></button>
+      <div class="modal-body" id="carModalBody">
+        <!-- Car details will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="videoModal">
+    <div class="modal-content">
+      <button class="modal-close"><i class="fas fa-times"></i></button>
+      <div class="modal-body">
+        <div class="video-container">
+          <iframe id="videoFrame" width="100%" height="500" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <div class="notification-content">
+      <i class="fas fa-check-circle"></i>
+      <span id="notificationText"></span>
+    </div>
+  </div>
+
+  <!-- Scroll to top -->
+  <button class="scroll-top" id="scrollTop">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="./script.js"></script>
+</body>
+
+</html>
